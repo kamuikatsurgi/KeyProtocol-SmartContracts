@@ -28,8 +28,14 @@ contract KeyProtocol{
 
         map[addr] = i;
     }
+/*
+    function addFundstoVault(address nft_contractaddr ,address token_addr, uint token_amount) public payable{
+        nftVault _vault = _nftvaults[map[nft_contractaddr]];
 
-    function addFunds(address nft_contractaddr ,address token_addr, uint token_amount) public {
+        _vault.addfunds(msg.sender, token_addr, token_amount);
+    }
+
+    function addFunds(address nft_contractaddr ,address token_addr, uint token_amount) public payable{
         Token token = Token(token_addr);
 
         token.approve(msg.sender, token_amount);
@@ -39,7 +45,7 @@ contract KeyProtocol{
             address(_nftvaults[map[nft_contractaddr]]),
             token_amount);
     }
-
+*/
     
 // Initialize
 //Claim + Burn
