@@ -14,7 +14,7 @@ contract nftVault{
     function addfunds(address msg_sender ,address token_addr, uint token_amount) payable public{
         Token token = Token(token_addr);
 
-        token.approve(msg.sender, token_amount);
+        token.approve(msg_sender, token_amount);
 
         token.transferFrom(
             msg_sender,
