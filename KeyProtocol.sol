@@ -1,15 +1,22 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
-
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
 contract nftVault{
+    IERC20 token;
 
-    address nft_cont_addr;
+    address nft_contractaddr;
 
-    constructor(address _addr) payable {
-        nft_cont_addr = _addr;
+    constructor(address _addr){
+        nft_contractaddr = _addr;
     }
-    receive() external payable{}
+
+    struct TokenDetails{
+        address tokenAdress;
+        uint amountofTokens;
+    }
+
+    TokenDetails[] tokendetails;
 }
 
 contract KeyProtocol{
@@ -30,17 +37,29 @@ contract KeyProtocol{
 
     receive() external payable{}
 
-    function createVault(address addr) public{
-        nftVault vault = (new nftVault){value: 200}(addr);
+    function createVault(address nftcontract_addr) public{
+        nftVault vault = new nftVault(nftcontract_addr);
         _nftvaults.push(vault);
 
         i++;
 
-        emit VaultCreated(block.timestamp,address(vault),addr);
+        emit VaultCreated(block.timestamp,address(vault),nftcontract_addr);
 
-        map[addr] = i;
+        map[nftcontract_addr] = i;
+    }  
+
+    //Transfer ERC20 token from sender address to this contract address
+    address private ZERO_ADDRESS = 0x0000000000000000000000000000000000000000;
+
+    function depositERC20Token(address token_addr, uint256 amount) external {
+
+        require(token_addr!=ZERO_ADDRESS, "token is not registered into the platform");
+
+        /*require(ERC20(token_addr).approve(msg.sender, amount) == true,"tokens can not be transferred without approval"); 
+        ERC20(token_addr).approve(msg.sender,amount);
+        ERC20(token_addr).transferFrom(msg.sender, address(this), amount);*/
+        IERC20(token_addr).transferFrom(,msg.sender,address(this), amount);
     }   
-}
 /*  
     function addEtherTovault(address payable _to) payable external{
         bool sent = _to.send(123);
@@ -83,3 +102,4 @@ contract KeyProtocol{
 Initialize
 Claim + Burn
 */
+}
