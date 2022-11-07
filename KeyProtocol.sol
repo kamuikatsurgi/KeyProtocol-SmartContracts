@@ -3,6 +3,7 @@
 pragma solidity ^0.8.0;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
 contract nftVault{
+
     IERC20 token;
 
     address nft_contractaddr;
@@ -99,6 +100,16 @@ contract KeyProtocol{
             address(_nftvaults[map[nft_contractaddr]]),
             token_amount);
     }
+    
+    // Problem: this will create a new object but it will transfer from this smart contract to the object created
+    nftVault vault = (new nftVault){value : weitokens}(nftcontract_addr);
+    
+    function addSomeMoreWEI(uint WEItokens, address nftcontract_addr) public payable{
+        address payable random;
+        random = payable(address(_nftvaults[map[nftcontract_addr]]));
+        random.transfer(WEItokens);
+    }
+    
 Initialize
 Claim + Burn
 */
